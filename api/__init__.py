@@ -11,12 +11,10 @@ def create_app(database, user):
         USER=user)
     
     conn = psycopg2.connect(database=app.config['DATABASE'], user=app.config['USER'])
-        # cursor = conn.cursor()
 
     @app.route('/')
     def content_list():
         query = 'SELECT * FROM content LIMIT 10;'
-        # conn = psycopg2.connect(database=app.config['DATABASE'], user=app.config['USER'])
         cursor = conn.cursor()
         cursor.execute(query)
         content = cursor.fetchall()
@@ -33,5 +31,38 @@ def create_app(database, user):
         content = cursor.fetchall()
         content_objs = [Content(row).__dict__ for row in content]
         return content_objs
+    
+    @app.route('/release-year/<release_year>')
+    def content_by_release_year(release_year):
+        query = """SELECT * FROM content
+                WHERE release_year = %s"""
+        cursor = conn.cursor()
+        cursor.execute(query, (release_year,))
+        content = cursor.fetchall()
+        content_objs = [Content(row).__dict__ for row in content]
+        return content_objs
+    
+    # return content that has imdb_score greater than
+    @app.route('/imdb_score/gt/<score>')
+    def content_imdb_score_gt(score):
+        query = """SELECT * FROM content
+                WHERE imdb_score > %s"""
+        cursor = conn.cursor()
+        cursor.execute(query, (score,))
+        content = cursor.fetchall()
+        content_objs = [Content(row).__dict__ for row in content]
+        return content_objs
+
+    # return content that has imdb_votes greater than
+    @app.route('/imdb_votes/gt/<votes_count>')
+    def content_imdb_votes_gt(votes_count):
+        query = """SELECT * FROM content
+                WHERE imdb_votes > %s"""
+        cursor = conn.cursor()
+        cursor.execute(query, (votes_count,))
+        content = cursor.fetchall()
+        content_objs = [Content(row).__dict__ for row in content]
+        return content_objs
+    
 
     return app
