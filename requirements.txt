@@ -1,0 +1,5 @@
+pandas
+flask
+dotenv
+pytest
+psycopg2-binary
