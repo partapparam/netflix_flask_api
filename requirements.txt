@@ -4,3 +4,4 @@ dotenv
 pytest
 psycopg2-binary
 sqlalchemy
+mypy-extensions
