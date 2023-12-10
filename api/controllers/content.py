@@ -1,5 +1,7 @@
-from flask import Blueprint
-from models import Content
+from flask import Blueprint, current_app
+from api.models import Content
+import psycopg2
+
 
 content_bp = Blueprint(
     # name we want to give our blueprint. Used for internal routing
@@ -13,9 +15,13 @@ content_bp = Blueprint(
     # static_folder='static
 )
 
+conn = psycopg2.connect(database=current_app.config['DATABASE'], user=current_app.config['USER'])
+
+
 @content_bp.route('/')
 def content_list():
     query = 'SELECT * FROM content LIMIT 10;'
+    conn = psycopg2.connect(database=current_app.config['DATABASE'], user=current_app.config['USER'])
     cursor = conn.cursor()
     cursor.execute(query)
     content = cursor.fetchall()
