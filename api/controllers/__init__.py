@@ -1,0 +1,1 @@
+from api.controllers.content import content_bp
