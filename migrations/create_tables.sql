@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS content (
     type VARCHAR(32),
     description TEXT,
     release_year INT,
-    age_certification VARCHAR(4),
+    age_certification VARCHAR(32),
     runtime INT,
     imdb_id VARCHAR(32) UNIQUE,
     imdb_score NUMERIC(3, 1),
