@@ -15,9 +15,6 @@ content_bp = Blueprint(
     # static_folder='static
 )
 
-conn = psycopg2.connect(database=current_app.config['DATABASE'], user=current_app.config['USER'])
-
-
 @content_bp.route('/')
 def content_list():
     query = 'SELECT * FROM content LIMIT 10;'
@@ -28,8 +25,10 @@ def content_list():
     content_objs = [Content(row).__dict__ for row in content]
     return content_objs
 
-@content_bp.route('/<type>')
+@content_bp.route('/type/<type>')
 def content_by_type(type):
+    conn = psycopg2.connect(database=current_app.config['DATABASE'], user=current_app.config['USER'])
+
     query = """SELECT * FROM content
             WHERE type = %s"""
     cursor = conn.cursor()
@@ -41,6 +40,7 @@ def content_by_type(type):
 
 @content_bp.route('/release-year/<release_year>')
 def content_by_release_year(release_year):
+    conn = psycopg2.connect(database=current_app.config['DATABASE'], user=current_app.config['USER'])
     query = """SELECT * FROM content
             WHERE release_year = %s"""
     cursor = conn.cursor()
@@ -52,6 +52,7 @@ def content_by_release_year(release_year):
 # return content that has imdb_score greater than
 @content_bp.route('/imdb_score/gt/<score>')
 def content_imdb_score_gt(score):
+    conn = psycopg2.connect(database=current_app.config['DATABASE'], user=current_app.config['USER'])
     query = """SELECT * FROM content
             WHERE imdb_score > %s"""
     cursor = conn.cursor()
@@ -63,6 +64,8 @@ def content_imdb_score_gt(score):
 # return content that has imdb_votes greater than
 @content_bp.route('/imdb_votes/gt/<votes_count>')
 def content_imdb_votes_gt(votes_count):
+    conn = psycopg2.connect(database=current_app.config['DATABASE'], user=current_app.config['USER'])
+
     query = """SELECT * FROM content
             WHERE imdb_votes > %s"""
     cursor = conn.cursor()
