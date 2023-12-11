@@ -45,3 +45,16 @@ def test_content_list(app, client):
 
     assert len(json_response) == 1
     assert json_response[0]['title'] == 'Taxi Driver'
+
+def test_content_by_type(app, client):
+    response = client.get('/content/type/movie')
+    json_response = json.loads(response.data)
+
+    assert len(json_response) == 1
+
+def test_content_by_release_year(app, client):
+    response = client.get('/content/release-year/1976')
+    json_response = json.loads(response.data)
+
+    assert len(json_response) == 1
+    assert json_response[0]['title'] == 'Taxi Driver'
