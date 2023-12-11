@@ -58,3 +58,17 @@ def test_content_by_release_year(app, client):
 
     assert len(json_response) == 1
     assert json_response[0]['title'] == 'Taxi Driver'
+
+def test_content_imdb_score_gt(app, client):
+    response = client.get('/content/imdb_score/gt/8.0')
+    json_response = json.loads(response.data)
+
+    assert len(json_response) == 1
+    assert json_response[0]['title'] == 'Taxi Driver'
+
+def test_content_imdb_votes_gt(app, client):
+    response = client.get('/content/imdb_votes/gt/750000')
+    json_response = json.loads(response.data)
+
+    assert len(json_response) == 1
+    assert json_response[0]['title'] == 'Taxi Driver'
